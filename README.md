@@ -1,4 +1,4 @@
-# Notes Application - MERN Stack
+# Notes Application 
 
 A full-stack notes application built with the MERN (MongoDB, Express, React, Node.js) stack. This application provides secure note management with user authentication, real-time search, and a responsive interface designed for seamless user experience.
 
