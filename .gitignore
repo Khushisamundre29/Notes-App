@@ -15,4 +15,7 @@ yarn-error.log
 
 # OS
 .DS_Store
-Thumbs.dbconfig.json 
+Thumbs.db
+
+# Config files
+config.json
