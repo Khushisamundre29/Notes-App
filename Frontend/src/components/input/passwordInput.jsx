@@ -9,7 +9,7 @@ const PasswordInput = ({ value, onChange, placeholder }) => {
   };
 
   return (
-    <div className="flex items-center h-12 border border-gray-300 px-4 rounded-md mt-4 w-full mb-4">
+    <div className="flex items-center h-12 border border-line px-4 rounded-md mt-4 w-full mb-4 focus-within:border-primary transition-colors">
       <input
         value={value}
         onChange={onChange}
@@ -24,9 +24,9 @@ const PasswordInput = ({ value, onChange, placeholder }) => {
         className="ml-2 focus:outline-none"
       >
         {isShowPassword ? (
-          <FaRegEye size={22} className="text-primary" />
+          <FaRegEye size={20} className="text-primary" />
         ) : (
-          <FaRegEyeSlash size={22} className="text-slate-400" />
+          <FaRegEyeSlash size={20} className="text-graphite" />
         )}
       </button>
     </div>

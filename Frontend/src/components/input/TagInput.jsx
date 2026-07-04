@@ -13,7 +13,7 @@ const TagInput = ({ tags, setTags }) => {
     if (inputValue.trim() !== "") {
       setTags([...tags, inputValue.trim()]);
       setInputValue("");
-      inputRef.current.focus(); // Focus the input after adding a tag
+      inputRef.current.focus();
     }
   };
 
@@ -32,10 +32,10 @@ const TagInput = ({ tags, setTags }) => {
       {tags?.length > 0 && (
         <div className="flex items-center gap-2 flex-wrap mt-2">
           {tags.map((tag, index) => (
-            <span key={index} className="flex items-center gap-2 text-sm text-slate-900 bg-slate-100 ox-3 py-1 rounded">
+            <span key={index} className="flex items-center gap-2 text-sm text-ink bg-paper border border-line px-3 py-1 rounded">
               # {tag}
               <button onClick={() => handleRemoveTag(tag)}>
-                <MdClose />
+                <MdClose className="text-graphite hover:text-secondary" />
               </button>
             </span>
           ))}
@@ -44,20 +44,20 @@ const TagInput = ({ tags, setTags }) => {
 
       <div className="flex items-center gap-4 mt-3">
         <input
-          ref={inputRef} // Added the ref here
+          ref={inputRef}
           type="text"
           value={inputValue}
-          className="text-sm bg-transparent border px-3 py-2 rounded outline-none"
+          className="text-sm bg-transparent border border-line px-3 py-2 rounded outline-none focus:border-primary transition-colors"
           placeholder="Add tags"
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
         <button
-          className="w-8 h-8 flex items-center justify-center rounded border border-blue-700 hover:bg-blue-700"
+          className="w-8 h-8 flex items-center justify-center rounded border border-primary hover:bg-primary transition-colors disabled:opacity-40"
           onClick={addNewTag}
           disabled={!inputValue.trim()}
         >
-          <MdAdd className="text-2xl text-blue-700 hover:text-white" />
+          <MdAdd className="text-xl text-primary hover:text-white" />
         </button>
       </div>
     </div>

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Navbar from "../../components/Navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/input/passwordInput";
 import { validateEmail } from "../../utils/helper";
-import axiosInstance from "../../utils/axiosInstance"; // ✅ Ensure axiosInstance is imported
+import axiosInstance from "../../utils/axiosInstance";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -15,35 +14,30 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
 
-    // Name validation
     if (name.trim() === "") {
       setError("Name is required.");
       return;
     }
 
-    // Email validation
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
     }
 
-    // Password validation
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
       return;
     }
 
-    // Confirm Password validation
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
-    setError(""); 
+    setError("");
 
-    //singUp API Call
     try {
       const response = await axiosInstance.post("/create-account", {
         fullName: name,
@@ -51,9 +45,9 @@ const Signup = () => {
         password: password,
       });
 
-      if (response.data && response.data.accessToken) {
-        localStorage.setItem("token", response.data.accessToken);
-        navigate("/dashboard"); 
+      if (response.data && !response.data.error) {
+        // account created — send the person to log in with their new credentials
+        navigate("/login");
       } else if (response.data?.message) {
         setError(response.data.message);
       }
@@ -67,68 +61,59 @@ const Signup = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="flex items-center justify-center mt-28">
-        <div className="w-96 border rounded bg-white px-7 py-10">
-          <form onSubmit={handleSubmit}>
-            <h4 className="text-2xl mb-7">Signup</h4>
-
-            {/* Name Input */}
-            <input
-              type="text"
-              placeholder="Name"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-
-            {/* Email Input */}
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none mt-3"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-
-            {/* Password Input */}
-            <PasswordInput
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mb-4 mt-3"
-              placeholder="Password"
-            />
-
-            {/* Confirm Password Input */}
-            <PasswordInput
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mb-4"
-              placeholder="Confirm Password"
-            />
-
-            {/* Error Message */}
-            {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
-
-            {/* Submit Button */}
-            <button type="submit" className="btn-primary">
-              Create Account
-            </button>
-
-            {/* Login Link */}
-            <p className="text-sm text-center mt-4">
-              Already have an account?{" "}
-              <Link to="/login" className="font-medium text-primary underline">
-                Login
-              </Link>
-            </p>
-          </form>
+    <div className="min-h-screen bg-paper flex items-center justify-center px-6">
+      <div className="w-full max-w-sm border border-line rounded-[10px] bg-white px-8 py-10 card-shadow">
+        <div className="flex items-center gap-2.5 justify-center mb-8">
         </div>
+
+        <form onSubmit={handleSubmit}>
+          <h4 className="font-display text-2xl mb-7 text-center text-ink">Sign up</h4>
+
+          <input
+            type="text"
+            placeholder="Name"
+            className="input-box"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+            className="input-box"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <PasswordInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+
+          <PasswordInput
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm password"
+          />
+
+          {error && <p className="text-secondary text-xs pb-1">{error}</p>}
+
+          <button type="submit" className="btn-primary">
+            Create account
+          </button>
+
+          <p className="text-sm text-center mt-4 text-graphite">
+            Already have an account?{" "}
+            <Link to="/login" className="font-medium text-primary underline">
+              Log in
+            </Link>
+          </p>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

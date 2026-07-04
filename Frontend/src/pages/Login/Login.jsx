@@ -1,21 +1,19 @@
 import React, { useState } from "react";
-import Navbar from "../../components/Navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
-import PasswordInput from "../../components/input/passwordInput"; 
+import PasswordInput from "../../components/input/passwordInput";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Email validation
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
@@ -26,9 +24,8 @@ const Login = () => {
       return;
     }
 
-    setError(""); // Clear previous error
+    setError("");
 
-    // Login API Call
     try {
       const response = await axiosInstance.post("/login", {
         email,
@@ -37,9 +34,8 @@ const Login = () => {
 
       if (response.data && response.data.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
-        navigate("/dashboard");
+        navigate("/home");
       }
-
     } catch (error) {
       if (error.response?.data?.message) {
         setError(error.response.data.message);
@@ -50,52 +46,44 @@ const Login = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="flex items-center justify-center mt-28">
-        <div className="w-96 border rounded bg-white px-7 py-10 shadow-md">
-          <form onSubmit={handleSubmit}>
-            <h4 className="text-2xl font-semibold mb-7 text-center">Login</h4>
-
-            {/* Email Input */}
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none text-sm"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-
-            {/* Password Input */}
-            <PasswordInput 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-            />
-
-            {/* Error Message */}
-            {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition mt-2"
-            >
-              Login
-            </button>
-
-            {/* Signup Link */}
-            <p className="text-sm text-center mt-4">
-              Not registered yet?{" "}
-              <Link to="/signup" className="font-medium text-blue-600 underline">
-                Create an Account
-              </Link>
-            </p>
-          </form>
+    <div className="min-h-screen bg-paper flex items-center justify-center px-6">
+      <div className="w-full max-w-sm border border-line rounded-[10px] bg-white px-8 py-10 card-shadow">
+        <div className="flex items-center gap-2.5 justify-center mb-8">
         </div>
+
+        <form onSubmit={handleSubmit}>
+          <h4 className="font-display text-2xl mb-7 text-center text-ink">Log in</h4>
+
+          <input
+            type="email"
+            placeholder="Email"
+            className="input-box"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <PasswordInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+
+          {error && <p className="text-secondary text-xs pb-1">{error}</p>}
+
+          <button type="submit" className="btn-primary">
+            Log in
+          </button>
+
+          <p className="text-sm text-center mt-4 text-graphite">
+            Not registered yet?{" "}
+            <Link to="/signup" className="font-medium text-primary underline">
+              Create an account
+            </Link>
+          </p>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

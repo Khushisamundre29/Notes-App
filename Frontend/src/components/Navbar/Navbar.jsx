@@ -6,7 +6,7 @@ import SearchBar from '../SearchBar/SearchBar';
 const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   const onLogout = () => {
     localStorage.clear();
@@ -25,18 +25,18 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   };
 
   return (
-    <div className="bg-white flex items-center justify-between px-6 py-2 drop-shadow">
-      <h2 className="text-xl font-medium text-black py-2">Notes</h2>
+    <div className="bg-paper flex items-center justify-between px-6 py-3 border-b border-line">
+      <h2 className="font-display text-xl text-ink py-2">NoteApp</h2>
 
-      <SearchBar 
+      <SearchBar
         value={searchQuery}
         onChange={({ target }) => {
           setSearchQuery(target.value);
         }}
         handleSearch={handleSearch}
         onClearSearch={onClearSearch}
-      /> 
-      
+      />
+
       <ProfileInfo userInfo={userInfo} onLogout={onLogout} />
     </div>
   );
